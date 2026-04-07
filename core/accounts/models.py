@@ -1,20 +1,20 @@
 import uuid
-from django.contrib.auth.models import AbstractUser
-from django.core.validators import MinValueValidator, MaxValueValidator
-from django.db import models
 
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
 
 class User(AbstractUser):
     class Roles(models.TextChoices):
-        USER = 'user', 'User'
-        ADMIN = 'admin', 'Admin'
-        STYLIST = 'stylist', 'Stylist'
+        USER = "user", "User"
+        ADMIN = "admin", "Admin"
+        STYLIST = "stylist", "Stylist"
 
     class SubPlan(models.TextChoices):
-        BASE = 'base', 'Base'
-        PREMIUM = 'premium', 'Premium'
-        VIP = 'vip', 'VIP'
+        BASE = "base", "Base"
+        PREMIUM = "premium", "Premium"
+        VIP = "vip", "VIP"
 
     role = models.CharField(
         max_length=20,
@@ -32,41 +32,40 @@ class User(AbstractUser):
     max_stylist_reviews = models.IntegerField(default=5)
 
 
-
 class UserProfile(models.Model):
     class Size(models.TextChoices):
-        S32 = '32', '32'
-        S34 = '34', '34'
-        S36 = '36', '36'
-        S38 = '38', '38'
-        S40 = '40', '40'
-        S42 = '42', '42'
-        S44 = '44', '44'
-        S46 = '46', '46'
-        S48 = '48', '48'
-        S50 = '50', '50'
-        S52 = '52', '52'
+        S32 = "32", "32"
+        S34 = "34", "34"
+        S36 = "36", "36"
+        S38 = "38", "38"
+        S40 = "40", "40"
+        S42 = "42", "42"
+        S44 = "44", "44"
+        S46 = "46", "46"
+        S48 = "48", "48"
+        S50 = "50", "50"
+        S52 = "52", "52"
 
     class Body(models.TextChoices):
-        KLEPSYDRA = 'klepsydra', 'Klepsydra'
-        GRUSZKA = 'gruszka', 'Gruszka'
-        JABLKO = 'jablko', 'Jabłko'
-        PROSTOKAT = 'prostokat', 'Prostokąt'
-        ODWROCONY_TROJKAT = 'odwrocony_trojkat', 'Odwrócony Trójkąt'
+        KLEPSYDRA = "klepsydra", "Klepsydra"
+        GRUSZKA = "gruszka", "Gruszka"
+        JABLKO = "jablko", "Jabłko"
+        PROSTOKAT = "prostokat", "Prostokąt"
+        ODWROCONY_TROJKAT = "odwrocony_trojkat", "Odwrócony Trójkąt"
 
     class BeautyType(models.TextChoices):
-        JASNA_WIOSNA = 'jasna_wiosna', 'Jasna Wiosna'
-        PRAWDZIWA_WIOSNA = 'prawdziwa_wiosna', 'Prawdziwa Wiosna'
-        ZYWA_WIOSNA = 'zywa_wiosna', 'Żywa Wiosna'
-        JASNE_LATO = 'jasne_lato', 'Jasne Lato'
-        PRAWDZIWE_LATO = 'prawdziwe_lato', 'Prawdziwe Lato'
-        MIEKKIE_LATO = 'miekkie_lato', 'Miękkie Lato'
-        MIEKKA_JESIEN = 'miekka_jesien', 'Miękka Jesień'
-        PRAWDZIWA_JESIEN = 'prawdziwa_jesien', 'Prawdziwa Jesień'
-        GLEBOKA_JESIEN = 'gleboka_jesien', 'Głęboka Jesień'
-        GLEBOKA_ZIMA = 'gleboka_zima', 'Głęboka Zima'
-        PRAWDZIWA_ZIMA = 'prawdziwa_zima', 'Prawdziwa Zima'
-        JASNA_ZIMA = 'jasna_zima', 'Jasna Zima'
+        JASNA_WIOSNA = "jasna_wiosna", "Jasna Wiosna"
+        PRAWDZIWA_WIOSNA = "prawdziwa_wiosna", "Prawdziwa Wiosna"
+        ZYWA_WIOSNA = "zywa_wiosna", "Żywa Wiosna"
+        JASNE_LATO = "jasne_lato", "Jasne Lato"
+        PRAWDZIWE_LATO = "prawdziwe_lato", "Prawdziwe Lato"
+        MIEKKIE_LATO = "miekkie_lato", "Miękkie Lato"
+        MIEKKA_JESIEN = "miekka_jesien", "Miękka Jesień"
+        PRAWDZIWA_JESIEN = "prawdziwa_jesien", "Prawdziwa Jesień"
+        GLEBOKA_JESIEN = "gleboka_jesien", "Głęboka Jesień"
+        GLEBOKA_ZIMA = "gleboka_zima", "Głęboka Zima"
+        PRAWDZIWA_ZIMA = "prawdziwa_zima", "Prawdziwa Zima"
+        JASNA_ZIMA = "jasna_zima", "Jasna Zima"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -104,4 +103,4 @@ class UserProfile(models.Model):
     )
 
     def __str__(self):
-        return f'Profile {self.user.username} id = {self.id}'
+        return f"Profile {self.user.username} id = {self.id}"

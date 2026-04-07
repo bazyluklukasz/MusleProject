@@ -30,14 +30,14 @@ jobs:
           pip install ruff mypy bandit safety
 
       - name: Run Ruff
-        run: ruff check src
+        run: ruff check .
 
       - name: Run mypy
-        run: mypy src
+        run: mypy .
         continue-on-error: true
 
       - name: Run bandit
-        run: bandit -r src -c pyproject.toml
+        run: bandit -r . -c pyproject.toml
 
       - name: Check dependencies security
         run: safety check

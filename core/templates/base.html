@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>{% block title %}StyleMuse | Aplikacja dla Stylistki{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            light: '#f7f5f2',
+                            dark: '#1c1917',
+                            accent: '#c8a97e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Ikony Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Optymalizacja pasków przewijania */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+
+        /* Płynne przewijanie do kotwic w CSS */
+        html { scroll-behavior: smooth; }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-brand-light text-brand-dark font-sans antialiased selection:bg-brand-accent selection:text-white transition-colors duration-300">
+
+    <!-- GŁÓWNA ZAWARTOŚĆ STRONY -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- Inicjalizacja ikon SVG -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

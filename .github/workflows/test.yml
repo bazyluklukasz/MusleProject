@@ -27,8 +27,6 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
-          pip install pytest pytest-mock pytest-cov
 
       - name: Test with coverage
-        run: pytest --cov tests
-
+        run: python manage.py test

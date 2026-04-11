@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Zaloguj się | StyleMuse{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-[#faf9f6] px-4 py-12 relative overflow-hidden">
+    <!-- Dekoracyjne tło -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-[#c8a97e]/5 rounded-full blur-3xl -mr-48 -mt-48"></div>
+
+    <div class="max-w-md w-full relative z-10">
+        <div class="text-center mb-10">
+            <a href="{% url 'home' %}" class="font-serif text-3xl tracking-wider font-semibold group">
+                STYLE<span class="text-[#c8a97e]">MUSE</span>
+            </a>
+            <h2 class="mt-8 text-2xl font-serif text-[#1c1917] italic">Witaj ponownie</h2>
+            <p class="mt-2 text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold">Osobisty panel stylu</p>
+        </div>
+
+        <div class="bg-white p-8 md:p-10 rounded-sm shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100">
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                <div class="bg-red-50 border-l-2 border-red-500 p-4 mb-6">
+                    <p class="text-[10px] text-red-700 font-bold uppercase tracking-tight">Błędny login lub hasło.</p>
+                </div>
+                {% endif %}
+
+                <div>
+                    <label for="id_username" class="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-2">
+                        Nazwa użytkownika
+                    </label>
+                    <input type="text" name="username" id="id_username" required
+                        class="w-full px-4 py-3 border border-gray-100 focus:border-[#c8a97e] focus:ring-0 outline-none transition-all rounded-sm text-sm placeholder-gray-300 bg-gray-50/30"
+                        placeholder="Twoja nazwa">
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="id_password" class="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
+                            Hasło
+                        </label>
+                        <a href="#" class="text-[9px] text-[#c8a97e] hover:text-[#1c1917] transition-colors uppercase font-bold tracking-widest">Zapomniałaś?</a>
+                    </div>
+                    <input type="password" name="password" id="id_password" required
+                        class="w-full px-4 py-3 border border-gray-100 focus:border-[#c8a97e] focus:ring-0 outline-none transition-all rounded-sm text-sm placeholder-gray-300 bg-gray-50/30"
+                        placeholder="••••••••">
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit"
+                         class="w-full py-4 bg-[#1c1917] text-white font-bold tracking-[0.4em] text-[10px] uppercase hover:bg-black transition-all rounded-sm shadow-lg transform hover:-translate-y-0.5 active:translate-y-0">
+                        Zaloguj się
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <p class="mt-8 text-center text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+            Nie masz konta?
+            <a href="{% url 'register' %}" class="text-[#c8a97e] hover:underline ml-1">Dołącz do nas</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

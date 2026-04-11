@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+    <!-- SEO / Open Graph -->
+    <meta name="description" content="{% block meta_description %}StyleMuse — Twój modowy kompas. Inspiracje, kody rabatowe i prywatna stylistka w jednej aplikacji.{% endblock %}">
+    <meta name="theme-color" content="#1c1917">
+    <meta property="og:title" content="{% block og_title %}StyleMuse{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Twój modowy kompas.{% endblock %}">
+    <meta property="og:type" content="website">
+    {% block meta %}{% endblock %}
+
     <title>{% block title %}StyleMuse | Aplikacja dla Stylistki{% endblock %}</title>
 
     <!-- Google Fonts -->
@@ -25,8 +33,8 @@
                     colors: {
                         brand: {
                             light: '#f7f5f2',
-                            dark: '#1c1917',
-                            accent: '#c8a97e',
+                            dark:  '#1c1917',
+                            accent:'#c8a97e',
                         }
                     }
                 }
@@ -38,27 +46,102 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* Optymalizacja pasków przewijania */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        /* ── Paski przewijania ── */
+        ::-webkit-scrollbar        { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track  { background: transparent; }
+        ::-webkit-scrollbar-thumb  { background: #e5e7eb; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
 
-        /* Płynne przewijanie do kotwic w CSS */
+        /* ── Płynne przewijanie ── */
         html { scroll-behavior: smooth; }
+
+        /* ── Animacje wejścia ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.45s ease both;
+        }
+
+        /* ── Toast (powiadomienia) ── */
+        #toast {
+            position: fixed;
+            bottom: 5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1c1917;
+            color: #fff;
+            font-size: 0.8rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.18);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s ease;
+            z-index: 9999;
+            white-space: nowrap;
+        }
+        #toast.show { opacity: 1; }
     </style>
 
     {% block extra_head %}{% endblock %}
 </head>
+
 <body class="bg-brand-light text-brand-dark font-sans antialiased selection:bg-brand-accent selection:text-white transition-colors duration-300">
 
-    <!-- GŁÓWNA ZAWARTOŚĆ STRONY -->
-    {% block content %}
-    {% endblock %}
+    <!-- ── FLASH MESSAGES (Django messages framework) ── -->
+    {% if messages %}
+    <div id="django-messages" class="fixed top-4 right-4 z-[200] space-y-2 max-w-sm">
+        {% for message in messages %}
+        <div class="flex items-start gap-3 bg-white border border-gray-100 shadow-lg rounded-lg px-4 py-3 text-sm
+            {% if message.tags == 'error' %}border-l-4 border-l-red-400
+            {% elif message.tags == 'success' %}border-l-4 border-l-green-400
+            {% elif message.tags == 'warning' %}border-l-4 border-l-yellow-400
+            {% else %}border-l-4 border-l-brand-accent{% endif %}">
+            <span class="flex-1">{{ message }}</span>
+            <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
-    <!-- Inicjalizacja ikon SVG -->
+    <!-- ── GŁÓWNA ZAWARTOŚĆ ── -->
+    {% block content %}{% endblock %}
+
+    <!-- ── GLOBALNY TOAST (JS) ── -->
+    <div id="toast"></div>
+
+    <!-- ── INICJALIZACJA IKON ── -->
     <script>
         lucide.createIcons();
     </script>
+
+    <!-- ── GLOBALNE FUNKCJE JS ── -->
+    <script>
+        /* Kopiowanie tekstu do schowka + toast */
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).catch(() => {});
+            showToast('✓ Skopiowano: ' + code);
+        }
+
+        /* Wyświetl toast z dowolną wiadomością */
+        function showToast(message, duration = 2500) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), duration);
+        }
+
+        /* Auto-ukryj Django messages po 4s */
+        setTimeout(() => {
+            const box = document.getElementById('django-messages');
+            if (box) box.style.opacity = '0';
+        }, 4000);
+    </script>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}Dołącz do StyleMuse | Rejestracja{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-[#faf9f6] px-4 py-20 relative overflow-hidden">
+    <!-- Dekoracyjne akcenty w tle -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-[#c8a97e]/10 rounded-full blur-[120px] -mr-64 -mt-64"></div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#1c1917]/5 rounded-full blur-[120px] -ml-64 -mb-64"></div>
+
+    <div class="max-w-md w-full relative z-10 animate-fade-in">
+        <!-- Nagłówek marki -->
+        <div class="text-center mb-12">
+            <a href="{% url 'home' %}" class="inline-block group">
+                <span class="font-serif text-4xl tracking-widest font-semibold transition-all duration-500 group-hover:tracking-[0.3em]">
+                    STYLE<span class="text-[#c8a97e]">MUSE</span>
+                </span>
+            </a>
+            <div class="mt-8 flex items-center justify-center">
+                <span class="h-px w-8 bg-[#c8a97e]/30"></span>
+                <h2 class="mx-4 font-serif text-xl text-[#1c1917] italic">Stwórz swój profil stylu</h2>
+                <span class="h-px w-8 bg-[#c8a97e]/30"></span>
+            </div>
+        </div>
+
+        <!-- Karta Formularza -->
+        <div class="bg-white p-8 md:p-12 rounded-sm shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-[#eeeeee]">
+            <form method="POST" class="space-y-6" id="register-form">
+                {% csrf_token %}
+
+                <!-- Błędy ogólne (non-field errors) -->
+                {% if form.non_field_errors %}
+                <div class="p-4 bg-red-50 border-l-2 border-red-400 mb-6">
+                    {% for error in form.non_field_errors %}
+                        <p class="text-[10px] text-red-600 uppercase tracking-wider font-bold">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Dynamiczne Pola z Twojego ModelForm -->
+                <div class="space-y-5" id="form-inputs-container">
+                    {% for field in form %}
+                    <div class="flex flex-col group">
+                        <label for="{{ field.id_for_label }}" class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#9ca3af] mb-2 transition-colors group-focus-within:text-[#c8a97e]">
+                            {{ field.label }}
+                        </label>
+
+                        <div class="relative custom-django-field">
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 text-red-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <p class="mt-2 text-[10px] text-red-400 italic font-medium flex items-center">
+                                    <span class="w-1 h-1 bg-red-400 rounded-full mr-2"></span> {{ error }}
+                                </p>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if field.help_text %}
+                            <p class="mt-2 text-[9px] text-gray-400 font-light leading-relaxed">{{ field.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Przycisk Rejestracji -->
+                <div class="pt-4">
+                    <button type="submit"
+                        class="w-full py-5 bg-[#1c1917] text-white font-bold tracking-[0.4em] text-[10px] uppercase hover:bg-black transition-all duration-300 rounded-sm shadow-xl flex items-center justify-center group overflow-hidden relative">
+                        <span class="relative z-10 flex items-center">
+                            Zarejestruj się
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="ml-3 transition-transform duration-300 group-hover:translate-x-1"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Stopka formularza -->
+        <div class="mt-10 text-center space-y-6">
+            <p class="text-xs text-gray-400 font-light">
+                Masz już konto?
+                <a href="{% url 'login' %}" class="text-[#c8a97e] font-bold hover:text-[#1c1917] transition-colors ml-1 uppercase tracking-widest text-[10px]">Zaloguj się</a>
+            </p>
+
+            <div class="flex items-center justify-center gap-6 pt-4">
+                <a href="{% url 'home' %}" class="text-[10px] text-gray-400 hover:text-[#1c1917] transition-colors uppercase tracking-[0.2em] flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Powrót
+                </a>
+                <span class="h-3 w-px bg-gray-200"></span>
+                <a href="#" class="text-[10px] text-gray-400 hover:text-[#1c1917] transition-colors uppercase tracking-[0.2em]">Prywatność</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Stylowanie pól generowanych przez Django (inputy tekstowe, email, hasła) */
+    #form-inputs-container input {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        background-color: transparent;
+        border: 1px solid #e5e7eb;
+        font-size: 0.875rem;
+        color: #1c1917;
+        border-radius: 2px;
+        outline: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #form-inputs-container input:focus {
+        border-color: #c8a97e;
+        background-color: #ffffff;
+        box-shadow: 0 10px 20px rgba(200, 169, 126, 0.05);
+    }
+
+    #form-inputs-container input::placeholder {
+        color: #d1d5db;
+        letter-spacing: 0.05em;
+    }
+
+    /* Ukrywanie domyślnych, surowych list błędów Django */
+    .errorlist {
+        display: none;
+    }
+
+    /* Animacja płynnego pojawiania się karty */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+</style>
+{% endblock %}

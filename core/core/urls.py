@@ -18,12 +18,14 @@ Including another URLconf
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    path("", TemplateView.as_view(template_name="marketing/home.html"), name="home"),
+    ### Login Logaut Register ResetPassword  LoginGoogle
+    path("accounts/", include("accounts.urls")),
 ]
 
 if settings.DEBUG:

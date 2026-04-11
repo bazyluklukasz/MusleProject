@@ -15,10 +15,10 @@
                 <div class="h-4 w-px bg-gray-300"></div>
 
                 <!-- Bez href na razie zgodnie z prośbą -->
-                <a href="#" class="text-sm font-medium hover:text-brand-accent transition-colors flex items-center gap-2">
+                <a href="{% url 'login' %}" class="text-sm font-medium hover:text-brand-accent transition-colors flex items-center gap-2">
                     <i data-lucide="user" class="w-4 h-4"></i> Zaloguj się
                 </a>
-                <a href="#" class="px-5 py-2.5 bg-brand-dark text-white text-sm font-medium hover:bg-black transition-colors rounded-sm shadow-sm">Dołącz za darmo</a>
+                <a href="{% url 'register' %}" class="px-5 py-2.5 bg-brand-dark text-white text-sm font-medium hover:bg-black transition-colors rounded-sm shadow-sm">Dołącz za darmo</a>
             </div>
             <div class="md:hidden flex items-center gap-4">
                 <a href="#" class="text-brand-dark hover:text-brand-accent">
@@ -93,7 +93,7 @@
                     </ul>
                 </div>
 
-                <a href="#" class="block w-full py-4 border-2 border-brand-dark text-center font-bold tracking-[0.2em] text-[10px] uppercase hover:bg-brand-dark hover:text-white transition-all rounded-sm">
+                <a href="{% url 'register' %}" class="block w-full py-4 border-2 border-brand-dark text-center font-bold tracking-[0.2em] text-[10px] uppercase hover:bg-brand-dark hover:text-white transition-all rounded-sm">
                     Dołącz bezpłatnie
                 </a>
             </div>

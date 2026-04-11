@@ -33,7 +33,7 @@ jobs:
         run: ruff check .
 
       - name: Run mypy
-        run: mypy .
+        run: mypy . # zamiast krpki bylo src
         continue-on-error: true
 
       - name: Run bandit

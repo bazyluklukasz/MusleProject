@@ -1,20 +1,12 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 
 from .models import User
 
 
-class FormRegister(forms.ModelForm):
+class UserRegisterForm(UserCreationForm):
+    email = forms.EmailField()
+
     class Meta:
         model = User
-        fields = ("username", "email", "first_name", "last_name", "password")
-
-        widgets = {
-            "password": forms.PasswordInput(),
-        }
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password"])
-        if commit:
-            user.save()
-        return user
+        fields = ("username", "email", "password1", "password2")

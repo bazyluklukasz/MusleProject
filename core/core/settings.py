@@ -19,7 +19,10 @@ SECRET_KEY = "django-insecure-!v=4%59)$iof)rhoz)3#m94hlz+dr%+kzc$ut1nxq^m@)3r)3s
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+INSTALLED_APPS = [
+    "django.contrib.admin",
+]
 
 
 INSTALLED_APPS = [
@@ -126,3 +129,4 @@ AUTH_USER_MODEL = "accounts.User"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "home"
 STATIC_URL = "static/"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

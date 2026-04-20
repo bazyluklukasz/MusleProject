@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex bg-[#faf9f6]">
+
+    <!-- ═══════════════════════════════════════════
+         SIDEBAR – Desktop
+    ════════════════════════════════════════════ -->
+    <aside class="hidden lg:flex w-72 bg-white border-r border-[#eeeeee] flex-col sticky top-0 h-screen">
+
+        <!-- Logo -->
+        <div class="p-8 border-b border-[#eeeeee]">
+            <a href="{% url 'home' %}" class="font-serif text-2xl tracking-widest font-semibold">
+                STYLE<span class="text-[#c8a97e]">MUSE</span>
+            </a>
+        </div>
+
+        <!-- Nawigacja -->
+        <nav class="flex-1 p-6 space-y-2">
+            <a href="{% url 'dashboard' %}"
+               class="flex items-center px-4 py-3 rounded-sm transition-all
+                      {% if active_nav == 'dashboard' %}
+                          bg-[#fdfcfb] text-[#c8a97e] font-medium border border-[#c8a97e]/10
+                      {% else %}
+                          text-gray-400 hover:text-[#1c1917] hover:bg-gray-50
+                      {% endif %}">
+                <i data-lucide="layout-dashboard" class="w-5 h-5 mr-4"></i> Mój Pulpit
+            </a>
+
+            <a href=""
+               class="flex items-center px-4 py-3 rounded-sm transition-all
+                      {% if active_nav == 'wardrobe' %}
+                          bg-[#fdfcfb] text-[#c8a97e] font-medium border border-[#c8a97e]/10
+                      {% else %}
+                          text-gray-400 hover:text-[#1c1917] hover:bg-gray-50
+                      {% endif %}">
+                <i data-lucide="shirt" class="w-5 h-5 mr-4"></i> Wirtualna Szafa
+            </a>
+
+            <a href=""
+               class="flex items-center px-4 py-3 rounded-sm transition-all
+                      {% if active_nav == 'orders' %}
+                          bg-[#fdfcfb] text-[#c8a97e] font-medium border border-[#c8a97e]/10
+                      {% else %}
+                          text-gray-400 hover:text-[#1c1917] hover:bg-gray-50
+                      {% endif %}">
+                <i data-lucide="sparkles" class="w-5 h-5 mr-4"></i> Szafy Kapsułowe
+            </a>
+
+            <a href=""
+               class="flex items-center px-4 py-3 rounded-sm transition-all
+                      {% if active_nav == 'discount_codes' %}
+                          bg-[#fdfcfb] text-[#c8a97e] font-medium border border-[#c8a97e]/10
+                      {% else %}
+                          text-gray-400 hover:text-[#1c1917] hover:bg-gray-50
+                      {% endif %}">
+                <i data-lucide="tag" class="w-5 h-5 mr-4"></i> Kody Rabatowe
+            </a>
+
+            {% if user.role == 'vip' or user.subscription_plan == 'vip' %}
+            <a href=""
+               class="flex items-center px-4 py-3 rounded-sm transition-all
+                      {% if active_nav == 'chat' %}
+                          bg-[#fdfcfb] text-[#c8a97e] font-medium border border-[#c8a97e]/10
+                      {% else %}
+                          text-gray-400 hover:text-[#1c1917] hover:bg-gray-50
+                      {% endif %}">
+                <i data-lucide="messages-square" class="w-5 h-5 mr-4"></i> Czat VIP
+                {% if unread_messages_count %}
+                <span class="ml-auto bg-[#c8a97e] text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {{ unread_messages_count }}
+                </span>
+                {% endif %}
+            </a>
+            {% endif %}
+        </nav>
+
+        <!-- Profil + wylogowanie -->
+        <div class="p-6 border-t border-[#eeeeee]">
+            <div class="flex items-center p-3 bg-gray-50 rounded-sm mb-4">
+                <div class="w-10 h-10 bg-[#c8a97e] rounded-full flex items-center justify-center text-white font-serif italic text-lg shadow-sm flex-shrink-0">
+                    {{ user.username|first|upper }}
+                </div>
+                <div class="ml-3 overflow-hidden">
+                    <p class="text-xs font-bold text-[#1c1917] truncate">{{ user.first_name|default:user.username }}</p>
+                    <p class="text-[10px] text-[#c8a97e] uppercase font-bold tracking-widest">
+                       {{ user.get_subscription_plan_display }}</p>
+                </div>
+            </div>
+
+            <!-- POPRAWNY LOGOUT (Formularz POST zapobiegający błędowi 405) -->
+            <form action="{% url 'logout' %}" method="post" class="w-full">
+                {% csrf_token %}
+                <button type="submit"
+                        class="w-full flex items-center px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest hover:text-red-500 transition-colors bg-transparent border-none cursor-pointer text-left">
+                    <i data-lucide="log-out" class="w-3 h-3 mr-2"></i> Wyloguj się
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════
+         MAIN CONTENT
+    ════════════════════════════════════════════ -->
+    <main class="flex-1 overflow-y-auto pb-24 lg:pb-12">
+
+        <!-- Sticky header z powitaniem -->
+        <header class="px-6 lg:px-10 py-6 flex justify-between items-center bg-white/60 backdrop-blur-sm sticky top-0 z-20 border-b border-[#eeeeee]/60">
+            <div>
+                <h1 class="font-serif text-2xl lg:text-3xl text-[#1c1917]">
+                    {% block page_title %}Mój Pulpit{% endblock %}
+                </h1>
+                <p class="text-xs text-gray-400 mt-0.5 uppercase tracking-[0.2em]">
+                    {% block page_subtitle %}{{ user.get_subscription_plan_display }}{% endblock %}
+                </p>
+            </div>
+            <div class="flex items-center gap-4">
+                <!-- Powiadomienia -->
+                <button class="relative p-2 text-gray-400 hover:text-[#c8a97e] transition-colors">
+                    <i data-lucide="bell" class="w-6 h-6"></i>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-[#c8a97e] rounded-full border-2 border-white"></span>
+                </button>
+                <!-- Avatar mobilny -->
+                <div class="lg:hidden w-9 h-9 bg-[#c8a97e] rounded-full flex items-center justify-center text-white font-serif italic text-base shadow-sm">
+                    {{ user.username|first|upper }}
+                </div>
+            </div>
+        </header>
+
+        <!-- ── Właściwa zawartość podstrony ── -->
+        <div class="px-6 lg:px-10 py-8 space-y-10">
+            {% block dashboard_content %}{% endblock %}
+        </div>
+
+    </main>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MOBILE BOTTOM NAV
+════════════════════════════════════════════ -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full bg-white border-t border-[#eeeeee] flex justify-around items-center py-3 z-50 shadow-lg">
+    <a href=""
+       class="flex flex-col items-center gap-1 {% if active_nav == 'dashboard' %}text-[#c8a97e]{% else %}text-gray-400{% endif %}">
+        <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+        <span class="text-[9px] uppercase tracking-widest">Pulpit</span>
+    </a>
+    <a href=""
+       class="flex flex-col items-center gap-1 {% if active_nav == 'wardrobe' %}text-[#c8a97e]{% else %}text-gray-400{% endif %}">
+        <i data-lucide="shirt" class="w-6 h-6"></i>
+        <span class="text-[9px] uppercase tracking-widest">Szafa</span>
+    </a>
+    <a href=""
+       class="flex flex-col items-center gap-1 {% if active_nav == 'orders' %}text-[#c8a97e]{% else %}text-gray-400{% endif %}">
+        <i data-lucide="sparkles" class="w-6 h-6"></i>
+        <span class="text-[9px] uppercase tracking-widest">Kapsułowe</span>
+    </a>
+    <a href=""
+       class="flex flex-col items-center gap-1 {% if active_nav == 'discount_codes' %}text-[#c8a97e]{% else %}text-gray-400{% endif %}">
+        <i data-lucide="tag" class="w-6 h-6"></i>
+        <span class="text-[9px] uppercase tracking-widest">Kody</span>
+    </a>
+    <a href=""
+       class="flex flex-col items-center gap-1 {% if active_nav == 'chat' %}text-[#c8a97e]{% else %}text-gray-400{% endif %}">
+        <i data-lucide="messages-square" class="w-6 h-6"></i>
+        <span class="text-[9px] uppercase tracking-widest">Czat</span>
+    </a>
+</nav>
+
+{% endblock %}

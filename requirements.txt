@@ -14,3 +14,4 @@ PyYAML==6.0.3
 ruff==0.15.9
 sqlparse==0.5.5
 virtualenv==21.2.0
+python-dotenv==1.0.1

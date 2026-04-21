@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-[#faf9f6] px-4 py-12 relative overflow-hidden">
-    <!-- Dekoracyjne tło -->
     <div class="absolute top-0 right-0 w-96 h-96 bg-[#c8a97e]/5 rounded-full blur-3xl -mr-48 -mt-48"></div>
 
     <div class="max-w-md w-full relative z-10">
@@ -54,7 +53,24 @@
                     </button>
                 </div>
             </form>
-        </div>
+
+            <div class="relative my-8">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-100"></div>
+                </div>
+                <div class="relative flex justify-center text-[9px] uppercase tracking-widest font-bold">
+                    <span class="bg-white px-4 text-gray-400">Lub kontynuuj przez</span>
+                </div>
+            </div>
+
+            <div>
+                <a href="{% url 'auth0_login' %}"
+                   class="w-full flex items-center justify-center gap-3 py-4 bg-white border border-gray-100 text-[#1c1917] font-bold tracking-[0.2em] text-[10px] uppercase hover:bg-gray-50 transition-all rounded-sm shadow-sm transform hover:-translate-y-0.5 active:translate-y-0">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="w-4 h-4">
+                    Zaloguj przez Google
+                </a>
+            </div>
+            </div>
 
         <p class="mt-8 text-center text-[10px] text-gray-400 font-bold uppercase tracking-widest">
             Nie masz konta?
